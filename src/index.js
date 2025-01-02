@@ -6,269 +6,101 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { Fragment } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/block-editor';
-import {
-	Button,
-	PanelBody,
-	PanelRow,
-	ToggleControl,
-	__experimentalGrid as Grid, // eslint-disable-line
-} from '@wordpress/components';
-import {
-	arrowRight,
-	arrowLeft,
-	chevronLeft,
-	chevronLeftSmall,
-	chevronRight,
-	chevronRightSmall,
-	cloud,
-	cloudUpload,
-	commentAuthorAvatar,
-	download,
-	external,
-	help,
-	info,
-	lockOutline,
-	login,
-	next,
-	previous,
-	shuffle,
-	wordpress,
-} from '@wordpress/icons';
+import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
-/**
- * All available icons.
- * (Order determines presentation order)
- */
-export const ICONS = [
-	{
-		label: __( 'Chevron Right', 'enable-button-icons' ),
-		value: 'chevron-right',
-		icon: chevronRight,
-	},
-	{
-		label: __( 'Chevron Left', 'enable-button-icons' ),
-		value: 'chevron-left',
-		icon: chevronLeft,
-	},
-	{
-		label: __( 'Chevron Right (Small)', 'enable-button-icons' ),
-		value: 'chevron-right-small',
-		icon: chevronRightSmall,
-	},
-	{
-		label: __( 'Chevron Left (Small)', 'enable-button-icons' ),
-		value: 'chevron-left-small',
-		icon: chevronLeftSmall,
-	},
-	{
-		label: __( 'Shuffle', 'enable-button-icons' ),
-		value: 'shuffle',
-		icon: shuffle,
-	},
-	{
-		label: __( 'Arrow Right', 'enable-button-icons' ),
-		value: 'arrow-right',
-		icon: arrowRight,
-	},
-	{
-		label: __( 'Arrow Left', 'enable-button-icons' ),
-		value: 'arrow-left',
-		icon: arrowLeft,
-	},
-	{
-		label: __( 'Next', 'enable-button-icons' ),
-		value: 'next',
-		icon: next,
-	},
-	{
-		label: __( 'Previous', 'enable-button-icons' ),
-		value: 'previous',
-		icon: previous,
-	},
-	{
-		label: __( 'Download', 'enable-button-icons' ),
-		value: 'download',
-		icon: download,
-	},
-	{
-		label: __( 'External Arrow', 'enable-button-icons' ),
-		value: 'external-arrow',
-		icon: (
-			<svg
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<polygon points="18 6 8.15240328 6 8.15240328 8.1101993 14.3985932 8.1101993 6 16.5087925 7.4912075 18 15.8898007 9.6014068 15.8898007 15.8475967 18 15.8475967"></polygon>
-			</svg>
-		),
-	},
-	{
-		label: __( 'External', 'enable-button-icons' ),
-		value: 'external',
-		icon: external,
-	},
-	{
-		label: __( 'Login', 'enable-button-icons' ),
-		value: 'login',
-		icon: login,
-	},
-	{
-		label: __( 'Lock', 'enable-button-icons' ),
-		value: 'lock-outline',
-		icon: lockOutline,
-	},
-	{
-		label: __( 'Avatar', 'enable-button-icons' ),
-		value: 'comment-author-avatar',
-		icon: commentAuthorAvatar,
-	},
-	{
-		label: __( 'Cloud', 'enable-button-icons' ),
-		value: 'cloud',
-		icon: cloud,
-	},
-	{
-		label: __( 'Cloud Upload', 'enable-button-icons' ),
-		value: 'cloud-upload',
-		icon: cloudUpload,
-	},
-	{
-		label: __( 'Help', 'enable-button-icons' ),
-		value: 'help',
-		icon: help,
-	},
-	{
-		label: __( 'Info', 'enable-button-icons' ),
-		value: 'info',
-		icon: info,
-	},
-	{
-		label: __( 'WordPress', 'enable-button-icons' ),
-		value: 'wordpress',
-		icon: wordpress,
-	},
-];
+// Get icons from PHP
+const { icons } = window.enableButtonIconsData;
 
-/**
- * Add the attributes needed for button icons.
- *
- * @since 0.1.0
- * @param {Object} settings
- */
-function addAttributes( settings ) {
-	if ( 'core/button' !== settings.name ) {
-		return settings;
-	}
+// Create a preview component for the icon selector
+const IconPreview = ({ iconKey }) => {
+	if (!icons[iconKey]) return null;
+	
+	return (
+		<div 
+			className="button-icon-preview"
+			dangerouslySetInnerHTML={{ __html: icons[iconKey] }}
+		/>
+	);
+};
 
-	// Add the block visibility attributes.
-	const iconAttributes = {
-		icon: {
-			type: 'string',
-		},
-		iconPositionLeft: {
-			type: 'boolean',
-			default: false,
-		},
-	};
+// Extend the SelectControl options to include previews
+const iconOptions = Object.keys(icons).map(key => ({
+	label: (
+		<Fragment>
+			<IconPreview iconKey={key} />
+			<span>{key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+		</Fragment>
+	),
+	value: key
+}));
 
-	const newSettings = {
-		...settings,
-		attributes: {
-			...settings.attributes,
-			...iconAttributes,
-		},
-	};
+// Add position control
+const withIconControls = createHigherOrderComponent(BlockEdit => {
+    return props => {
+        if (props.name !== 'core/button') {
+            return <BlockEdit {...props} />;
+        }
 
-	return newSettings;
-}
+        const { attributes, setAttributes } = props;
 
-addFilter(
-	'blocks.registerBlockType',
-	'enable-button-icons/add-attributes',
-	addAttributes
-);
+        return (
+            <Fragment>
+                <BlockEdit {...props} />
+                <InspectorControls>
+                    <PanelBody title={__('Icon Settings', 'enable-button-icons')}>
+                        <IconGrid 
+                            selectedIcon={attributes.icon || ''}
+                            onChange={icon => setAttributes({ icon })}
+                        />
+                        {attributes.icon && (
+                            <ToggleControl
+                                label={__('Icon on left', 'enable-button-icons')}
+                                checked={!!attributes.iconPositionLeft}
+                                onChange={() => setAttributes({ 
+                                    iconPositionLeft: !attributes.iconPositionLeft 
+                                })}
+                            />
+                        )}
+                    </PanelBody>
+                </InspectorControls>
+            </Fragment>
+        );
+    };
+}, 'withIconControls');
 
-/**
- * Filter the BlockEdit object and add icon inspector controls to button blocks.
- *
- * @since 0.1.0
- * @param {Object} BlockEdit
- */
-function addInspectorControls( BlockEdit ) {
-	return ( props ) => {
-		if ( props.name !== 'core/button' ) {
-			return <BlockEdit { ...props } />;
-		}
 
-		const { attributes, setAttributes } = props;
-		const { icon: currentIcon, iconPositionLeft } = attributes;
+import { Button, Flex, FlexItem } from '@wordpress/components';
 
-		return (
-			<>
-				<BlockEdit { ...props } />
-				<InspectorControls>
-					<PanelBody
-						title={ __( 'Icon settings', 'enable-button-icons' ) }
-						className="button-icon-picker"
-						initialOpen={ true }
-					>
-						<PanelRow>
-							<Grid
-								className="button-icon-picker__grid"
-								columns="5"
-								gap="0"
-							>
-								{ ICONS.map( ( icon, index ) => (
-									<Button
-										key={ index }
-										label={ icon?.label }
-										isPressed={ currentIcon === icon.value }
-										className="button-icon-picker__button"
-										onClick={ () =>
-											setAttributes( {
-												// Allow user to disable icons.
-												icon:
-													currentIcon === icon.value
-														? null
-														: icon.value,
-											} )
-										}
-									>
-										{ icon.icon ?? icon.value }
-									</Button>
-								) ) }
-							</Grid>
-						</PanelRow>
-						<PanelRow>
-							<ToggleControl
-								label={ __(
-									'Show icon on left',
-									'enable-button-icons'
-								) }
-								checked={ iconPositionLeft }
-								onChange={ () => {
-									setAttributes( {
-										iconPositionLeft: ! iconPositionLeft,
-									} );
-								} }
-							/>
-						</PanelRow>
-					</PanelBody>
-				</InspectorControls>
-			</>
-		);
-	};
-}
+const IconGrid = ({ selectedIcon, onChange }) => {
+    return (
+        <Flex gap={2} justify="flex-start" wrap>
+            {Object.keys(icons).map(iconKey => (
+                <FlexItem key={iconKey}>
+                    <Button
+                        className={`icon-grid-button ${selectedIcon === iconKey ? 'is-selected' : ''}`}
+                        onClick={() => onChange(iconKey)}
+                        label={iconKey.replace(/-/g, ' ')}
+                    >
+                        <div 
+                            className="icon-grid-preview"
+                            dangerouslySetInnerHTML={{ __html: icons[iconKey] }}
+                        />
+                    </Button>
+                </FlexItem>
+            ))}
+        </Flex>
+    );
+};
 
 addFilter(
 	'editor.BlockEdit',
-	'enable-button-icons/add-inspector-controls',
-	addInspectorControls
+	'enable-button-icons/with-icon-controls',
+	withIconControls
 );
 
 /**
@@ -299,3 +131,118 @@ addFilter(
 	'enable-button-icons/add-classes',
 	addClasses
 );
+
+addFilter(
+    'blocks.registerBlockType',
+    'enable-button-icons/button-attributes',
+    (settings, name) => {
+        if (name !== 'core/button') {
+            return settings;
+        }
+
+        return {
+            ...settings,
+            attributes: {
+                ...settings.attributes,
+                icon: {
+                    type: 'string',
+                    default: ''
+                },
+                iconPositionLeft: {
+                    type: 'boolean',
+                    default: false
+                }
+            }
+        };
+    }
+);
+
+// Add save handler to ensure icons persist
+addFilter(
+    'blocks.getSaveContent.extraProps',
+    'enable-button-icons/save-props',
+    (extraProps, blockType, attributes) => {
+        if (blockType.name !== 'core/button') {
+            return extraProps;
+        }
+
+        if (attributes.icon) {
+            extraProps.className = extraProps.className || '';
+            extraProps.className += attributes.iconPositionLeft ? ' has-icon-left' : ' has-icon-right';
+        }
+
+        return extraProps;
+    }
+);
+
+// Add edit handler for live preview
+const withIconPreview = createHigherOrderComponent((BlockEdit) => {
+    return (props) => {
+        if (props.name !== 'core/button') {
+            return <BlockEdit {...props} />;
+        }
+
+        const { attributes } = props;
+        const { icon, iconPositionLeft } = attributes;
+
+        if (!icon) {
+            return <BlockEdit {...props} />;
+        }
+
+        const iconElement = (
+            <span 
+                className="button-icon"
+                dangerouslySetInnerHTML={{ __html: icons[icon] }}
+            />
+        );
+
+        return (
+            <div className="wp-block-button">
+                <div className={`wp-block-button__link ${iconPositionLeft ? 'has-icon-left' : 'has-icon-right'}`}>
+                    {iconPositionLeft && iconElement}
+                    <BlockEdit {...props} />
+                    {!iconPositionLeft && iconElement}
+                </div>
+            </div>
+        );
+    };
+}, 'withIconPreview');
+
+
+
+
+addFilter(
+    'editor.BlockEdit',
+    'enable-button-icons/with-icon-preview',
+    withIconPreview
+);
+
+import { registerBlockType } from '@wordpress/blocks';
+
+// Register the extended button block
+const buttonBlockType = wp.blocks.getBlockType('core/button');
+
+if (buttonBlockType) {
+    registerBlockType('core/button', {
+        ...buttonBlockType,
+        edit: withIconPreview(buttonBlockType.edit),
+        save: (props) => {
+            const { attributes } = props;
+            const { icon, iconPositionLeft } = attributes;
+            
+            // Use the original save function
+            const originalContent = buttonBlockType.save(props);
+            
+            if (!icon) {
+                return originalContent;
+            }
+
+            // Add icon classes
+            const className = `wp-block-button__link ${iconPositionLeft ? 'has-icon-left' : 'has-icon-right'}`;
+            
+            return cloneElement(originalContent, {
+                className
+            });
+        }
+    });
+}
