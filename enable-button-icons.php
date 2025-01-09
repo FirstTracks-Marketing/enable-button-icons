@@ -28,7 +28,8 @@ function enable_button_icons_enqueue_block_editor_assets() {
 		'enable-button-icons-editor-scripts',
 		plugin_dir_url( __FILE__ ) . 'build/index.js',
 		$asset_file['dependencies'],
-		$asset_file['version']
+		$asset_file['version'],
+		true
 	);
 
 	wp_set_script_translations(
@@ -39,11 +40,11 @@ function enable_button_icons_enqueue_block_editor_assets() {
 
 	wp_enqueue_style(
 		'enable-button-icons-editor-styles',
-		plugin_dir_url( __FILE__ ) . 'build/editor.css'
+		plugin_dir_url( __FILE__ ) . 'build/editor.css',
+		array(),
+		$asset_file['version']
 	);
 }
-add_action( 'enqueue_block_editor_assets', 'enable_button_icons_enqueue_block_editor_assets' );
-
 /**
  * Enqueue block styles
  * (Applies to both frontend and Editor)
@@ -63,6 +64,10 @@ add_action( 'init', 'enable_button_icons_block_styles' );
 
 /**
  * Render icons on the frontend.
+ *
+ * @param string $block_content The block content.
+ * @param array  $block         The block attributes.
+ * @return string The modified block content.
  */
 function enable_button_icons_render_block_button( $block_content, $block ) {
 	if ( ! isset( $block['attrs']['icon'] ) ) {
