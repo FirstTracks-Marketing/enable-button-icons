@@ -3,7 +3,7 @@
  * Plugin Name:         Enable Button Icons
  * Plugin URI:          https://www.nickdiego.com/
  * Description:         Easily add icons to Button blocks.
- * Version:             0.2.0
+ * Version:             0.2.1
  * Requires at least:   6.3
  * Requires PHP:        7.4
  * Author:              Nick Diego
