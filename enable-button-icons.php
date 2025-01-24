@@ -45,7 +45,7 @@ function enable_button_icons_enqueue_block_editor_assets() {
 		$asset_file['version']
 	);
 }
-add_action( 'enqueue_block_editor_assets', 'enable_button_icons_enqueue_block_editor_assets' );
+add_action( 'enqueue_block_assets', 'enable_button_icons_enqueue_block_editor_assets' );
 
 /**
  * Enqueue block styles
