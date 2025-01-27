@@ -54,15 +54,15 @@ export const ICONS = [
 			</svg>
 		),
 	},
-	// {
-	// 	label: __( 'Arrow Left', 'enable-button-icons' ),
-	// 	value: 'arrow-narrow-left',
-	// 	icon: (
-	// 		<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
-	// 			<path fill-rule='evenodd' d='M4.299 12.717a.996.996 0 0 1-.008-1.416v-.01L8.288 7.3a.99.99 0 0 1 1.42 0c.389.39.389 1.018 0 1.418l-2.3 2.295h11.593c.55 0 .999.44.999.998 0 .549-.45.998-1 .998H7.43l2.287 2.284a.993.993 0 0 1 0 1.408h-.01c-.19.18-.45.289-.71.289l.011.011c-.27 0-.53-.11-.709-.29l-3.997-3.992-.002-.001Z' clip-rule='evenodd'/>
-	// 		</svg>
-	// 	),
-	// },
+	{
+		label: __( 'Arrow Left', 'enable-button-icons' ),
+		value: 'arrow-narrow-left',
+		icon: (
+			<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
+				<path fill-rule='evenodd' d='M4.299 12.717a.996.996 0 0 1-.008-1.416v-.01L8.288 7.3a.99.99 0 0 1 1.42 0c.389.39.389 1.018 0 1.418l-2.3 2.295h11.593c.55 0 .999.44.999.998 0 .549-.45.998-1 .998H7.43l2.287 2.284a.993.993 0 0 1 0 1.408h-.01c-.19.18-.45.289-.71.289l.011.011c-.27 0-.53-.11-.709-.29l-3.997-3.992-.002-.001Z' clip-rule='evenodd'/>
+			</svg>
+		),
+	},
 	// {
 	// 	label: __( 'Search', 'enable-button-icons' ),
 	// 	value: 'search',

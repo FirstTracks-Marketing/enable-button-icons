@@ -111,7 +111,7 @@ function enable_button_icons_render_block_button( $block_content, $block ) {
 	$block_content = $positionLeft //phpcs:ignore
 		? preg_replace( '/(<a[^>]*>)(.*?)(<\/a>)/i', '$1<span class="wp-block-button__link-icon" aria-hidden="true">' . $icons[ $icon ] . '</span>$2$3', $block_content )
 		: preg_replace( '/(<a[^>]*>)(.*?)(<\/a>)/i', '$1$2<span class="wp-block-button__link-icon" aria-hidden="true">' . $icons[ $icon ] . '</span>$3', $block_content );
-
+	
 	return $block_content;
 }
 add_filter( 'render_block_core/button', 'enable_button_icons_render_block_button', 10, 2 );
