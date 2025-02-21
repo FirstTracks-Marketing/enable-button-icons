@@ -3,7 +3,7 @@
  * Plugin Name:         Enable Button Icons
  * Plugin URI:          https://www.nickdiego.com/
  * Description:         Easily add icons to Button blocks.
- * Version:             0.2.2
+ * Version:             0.2.3
  * Requires at least:   6.3
  * Requires PHP:        7.4
  * Author:              Nick Diego
@@ -46,7 +46,6 @@ function enable_button_icons_enqueue_block_editor_assets() {
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'enable_button_icons_enqueue_block_editor_assets' );
-
 
 
 /**
@@ -94,6 +93,8 @@ function enable_button_icons_render_block_button( $block_content, $block ) {
 		'minus'              => "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path fill-rule='evenodd' d='M25.334 14.667a1.333 1.333 0 0 1 .155 2.657l-.155.01H6.666a1.333 1.333 0 0 1-.156-2.658l.156-.01h18.666Z' clip-rule='evenodd'/></svg>",
 		'download'           => "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill-rule='evenodd' d='M11.559 16.899a1.001 1.001 0 0 0 1.033-.094c.041-.03.081-.062.118-.097l5-5c.39-.4.39-1.03 0-1.42a.991.991 0 0 0-1.42 0l-3.29 3.3V4c0-.56-.45-1-1-1-.56 0-1 .44-1 1v9.586L7.71 10.29a.991.991 0 0 0-1.42 0 .99.99 0 0 0 0 1.42l5 5a.98.98 0 0 0 .269.19ZM21 19c0 1.65-1.35 3-3 3H6c-1.66 0-3-1.35-3-3v-2c0-.56.44-1 1-1 .55 0 1 .44 1 1v2c0 .55.44 1 1 1h12c.55 0 1-.45 1-1v-2c0-.56.44-1 1-1 .55 0 1 .44 1 1v2Z' clip-rule='evenodd'/></svg>",
 		'multiply'           => "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 20'><path fill-rule='evenodd' d='M6.011 4.341a.833.833 0 0 0-1.1 1.248L9.321 10l-4.41 4.412-.07.078a.833.833 0 0 0 1.249 1.1l4.41-4.41 4.411 4.41.079.07a.833.833 0 0 0 1.1-1.248L11.679 10l4.41-4.41.07-.08a.833.833 0 0 0-1.248-1.1l-4.41 4.411-4.411-4.41-.079-.07Z' clip-rule='evenodd'/></svg>",
+		'phone'              => "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M20.482 19.517 20 20c-1.49 1.49-7 2-12.5-3.5S2.5 5.5 4 4l.491-.491a1.75 1.75 0 0 1 2.693.267l2.02 3.03a1.75 1.75 0 0 1-.218 2.208l-1.049 1.049c-.268.267-.357.663-.183.999.32.612.984 1.675 2.246 2.938 1.262 1.262 2.325 1.927 2.938 2.245.336.175.731.085 1-.182l1.048-1.049a1.75 1.75 0 0 1 2.208-.218l3.02 2.013a1.76 1.76 0 0 1 .268 2.708Z'/></svg>",
+		'email'              => "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill-rule='evenodd' d='M2.327 5.638C2 6.28 2 7.12 2 8.8v6.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C4.28 20 5.12 20 6.8 20h10.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C22 17.72 22 16.88 22 15.2V8.8c0-1.68 0-2.52-.327-3.162a3 3 0 0 0-1.311-1.311C19.72 4 18.88 4 17.2 4H6.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311Zm5.239 2.537a1 1 0 0 0-1.132 1.65l3.869 2.654a3 3 0 0 0 3.394 0l3.869-2.654a1 1 0 0 0-1.132-1.65l-3.868 2.654a1 1 0 0 1-1.132 0L7.566 8.175Z' clip-rule='evenodd'/></svg>",
 
 	);
 
@@ -113,7 +114,7 @@ function enable_button_icons_render_block_button( $block_content, $block ) {
 	$block_content = $positionLeft //phpcs:ignore
 		? preg_replace( '/(<a[^>]*>)(.*?)(<\/a>)/i', '$1<span class="wp-block-button__link-icon" aria-hidden="true">' . $icons[ $icon ] . '</span>$2$3', $block_content )
 		: preg_replace( '/(<a[^>]*>)(.*?)(<\/a>)/i', '$1$2<span class="wp-block-button__link-icon" aria-hidden="true">' . $icons[ $icon ] . '</span>$3', $block_content );
-	
+
 	return $block_content;
 }
 add_filter( 'render_block_core/button', 'enable_button_icons_render_block_button', 10, 2 );
