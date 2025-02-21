@@ -67,6 +67,15 @@ $email: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' h
         } 
     }
 
+    &.has-icon__email {
+        .wp-block-button__link {
+            &::after, &::before {
+                mask-image: url( $email);
+                -webkit-mask-image: url( $email );
+            } 
+        } 
+    }
+
     &.has-icon__play-circle {
         .wp-block-button__link {
             &::after, &::before {
