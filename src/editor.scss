@@ -10,6 +10,7 @@ $minus: "data:image/svg+xml;utf8,<svg width='32' height='32' xmlns='http://www.w
 $download: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path fill-rule='evenodd' d='M11.559 16.899a1.001 1.001 0 0 0 1.033-.094c.041-.03.081-.062.118-.097l5-5c.39-.4.39-1.03 0-1.42a.991.991 0 0 0-1.42 0l-3.29 3.3V4c0-.56-.45-1-1-1-.56 0-1 .44-1 1v9.586L7.71 10.29a.991.991 0 0 0-1.42 0 .99.99 0 0 0 0 1.42l5 5a.98.98 0 0 0 .269.19ZM21 19c0 1.65-1.35 3-3 3H6c-1.66 0-3-1.35-3-3v-2c0-.56.44-1 1-1 .55 0 1 .44 1 1v2c0 .55.44 1 1 1h12c.55 0 1-.45 1-1v-2c0-.56.44-1 1-1 .55 0 1 .44 1 1v2Z' clip-rule='evenodd'/></svg>";
 $multiply: "data:image/svg+xml;utf8,<svg width='21' height='20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M6.011 4.341a.833.833 0 0 0-1.1 1.248L9.321 10l-4.41 4.412-.07.078a.833.833 0 0 0 1.249 1.1l4.41-4.41 4.411 4.41.079.07a.833.833 0 0 0 1.1-1.248L11.679 10l4.41-4.41.07-.08a.833.833 0 0 0-1.248-1.1l-4.41 4.411-4.411-4.41-.079-.07Z' clip-rule='evenodd'/></svg>";
 $external_arrow: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path fill-rule='evenodd' d='M20.383 3.076A.997.997 0 0 0 20 3h-5l-.117.007A1 1 0 0 0 14 4l.007.117A1 1 0 0 0 15 5h2.586l-8.293 8.293-.083.094a1 1 0 0 0 1.497 1.32L19 6.414V9l.007.117A1 1 0 0 0 21 9V4l-.007-.116M11 6a1 1 0 0 1 .117 1.993L11 8H6a1 1 0 0 0-.993.883L5 9v9a1 1 0 0 0 .883.993L6 19h9a1 1 0 0 0 .993-.883L16 18v-5a1 1 0 0 1 1.993-.117L18 13v5a3 3 0 0 1-2.824 2.995L15 21H6a3 3 0 0 1-2.995-2.824L3 18V9a3 3 0 0 1 2.824-2.995L6 6h5Z' clip-rule='evenodd'/></svg>";
+$phone: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M20.482 19.517 20 20c-1.49 1.49-7 2-12.5-3.5S2.5 5.5 4 4l.491-.491a1.75 1.75 0 0 1 2.693.267l2.02 3.03a1.75 1.75 0 0 1-.218 2.208l-1.049 1.049c-.268.267-.357.663-.183.999.32.612.984 1.675 2.246 2.938 1.262 1.262 2.325 1.927 2.938 2.245.336.175.731.085 1-.182l1.048-1.049a1.75 1.75 0 0 1 2.208-.218l3.02 2.013a1.76 1.76 0 0 1 .268 2.708Z'/></svg>";
 
 // Add icons to Button blocks and style appropriately.
 .wp-block-button[class*=has-icon__] {
@@ -52,6 +53,15 @@ $external_arrow: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' wid
             &::after, &::before {
                 mask-image: url( $external_arrow);
                 -webkit-mask-image: url( $external_arrow );
+            } 
+        } 
+    }
+
+    &.has-icon__phone {
+        .wp-block-button__link {
+            &::after, &::before {
+                mask-image: url( $phone);
+                -webkit-mask-image: url( $phone );
             } 
         } 
     }
